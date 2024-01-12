@@ -1,9 +1,20 @@
 import { Row, Col } from "react-bootstrap";
 import Note from "../components/NoteCard";
-import notes from "./notes.js";
 import Footer from "../components/Footer";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const HomeScreen = () => {
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const { data } = await axios.get("/api/notes");
+      setNotes(data);
+    };
+    fetchNotes();
+  }, []);
+
   return (
     <>
       <Row>
