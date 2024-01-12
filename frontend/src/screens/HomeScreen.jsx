@@ -1,6 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import Note from "../components/NoteCard";
 import notes from "./notes.js";
+import Footer from "../components/Footer";
 
 const HomeScreen = () => {
   return (
@@ -12,6 +13,7 @@ const HomeScreen = () => {
           </Col>
         ))}
       </Row>
+      <Footer />
     </>
   );
 };
