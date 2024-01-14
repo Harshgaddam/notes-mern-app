@@ -33,7 +33,15 @@ const Header = () => {
             <Nav className="ms-auto">
               {userInfo ? (
                 <>
-                  <NavDropdown align="end" title={userInfo.name} id="username">
+                  <NavDropdown
+                    title={
+                      <strong style={{ color: "white", fontSize: "18px" }}>
+                        {userInfo.name}
+                      </strong>
+                    }
+                    id="username"
+                    align="end"
+                  >
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
@@ -44,7 +52,7 @@ const Header = () => {
                   </NavDropdown>
                 </>
               ) : (
-                <LinkContainer to="/api/user/login">
+                <LinkContainer to="/login">
                   <Nav.Link>
                     <FaUser /> Sign In
                   </Nav.Link>

@@ -12,14 +12,16 @@ const getUserById = asyncHandler(async (req, res) => {
 
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-  console.log(user);
-  if (!user) {
-    return res.send("User not found");
-  }
+
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
   user.password = req.body.password || user.password;
   user.notes = req.body.notes || user.notes;
+
+  console.log(user);
+  if (!user) {
+    return res.send("User not found");
+  }
 
   const updatedUser = await user.save();
 

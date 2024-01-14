@@ -9,9 +9,14 @@ import {
   logoutUser,
 } from "../controllers/userController.js";
 
-router.get("/:id", getUserById).get("/:id/notes", getUserNotes);
-router.put("/:id", updateUser);
+router
+  .get("/:id", getUserById)
+  .get("/:id/notes", getUserNotes)
+  .put("/:id", updateUser);
 router.delete("/:id", deleteUser);
-router.post("/login", authUser).post("/logout", logoutUser);
+router
+  .post("/login", authUser)
+  .post("/logout", logoutUser)
+  .put("/profile", updateUser);
 
 export default router;

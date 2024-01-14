@@ -12,6 +12,7 @@ import NotePage from "./screens/Notepage.jsx";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import LoginScreen from "./screens/LoginScreen.jsx";
+import ProfileScreen from "./screens/ProfileScreen.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,7 +20,8 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/note" element={<NotePage />} />
       <Route path="/api/note/:id" element={<NotePage />} />
-      <Route path="/api/user/login" element={<LoginScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
+      <Route path="/profile" element={<ProfileScreen />} />
     </Route>
   )
 );
