@@ -1,20 +1,5 @@
 import mongoose from "mongoose";
-
-const NotesSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-    },
-    content: {
-      type: String,
-    },
-  },
-  { timestamps: true }
-);
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,14 +16,29 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    notes: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Notes",
-    },
+    notes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "Notes",
+      },
+    ],
   },
   { timestamps: true }
 );
+
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = bcrypt.hash(this.password, salt);
+});
 
 const userModel = mongoose.model("User", userSchema);
 
