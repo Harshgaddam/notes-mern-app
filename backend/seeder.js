@@ -19,7 +19,7 @@ const importData = async () => {
 
       for (const note of notes) {
         if (note.user !== user.name) continue;
-        console.log(note, note.user);
+
         const newNote = new Note({
           ...note,
           user: newUser._id,
