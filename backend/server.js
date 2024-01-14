@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import bodyParser from "body-parser";
 import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 connectDB();
 
@@ -13,6 +14,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.use("/api/note", noteRoutes);
 app.use("/api/user", userRoutes);
