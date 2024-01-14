@@ -4,9 +4,10 @@ import {
   getUserById,
   updateUser,
   deleteUser,
+  getUserNotes,
 } from "../controllers/userController.js";
 
-router.get("/:id", getUserById);
+router.get("/:id", getUserById).get("/:id/notes", getUserNotes);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 
