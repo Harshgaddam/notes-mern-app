@@ -17,6 +17,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/note" element={<NotePage />} />
+      <Route path="/api/note/:id" element={<NotePage />} />
     </Route>
   )
 );
