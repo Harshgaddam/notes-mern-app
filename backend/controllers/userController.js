@@ -70,4 +70,19 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { getUserById, updateUser, deleteUser, getUserNotes, authUser };
+const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
+export {
+  getUserById,
+  updateUser,
+  deleteUser,
+  getUserNotes,
+  authUser,
+  logoutUser,
+};
