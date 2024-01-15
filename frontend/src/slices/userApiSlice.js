@@ -30,6 +30,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getUserNotes: builder.query({
+      query: ({ userId }) => ({
+        url: `${USERS_URL}/${userId}/notes`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -38,4 +44,5 @@ export const {
   useLogoutMutation,
   useProfileMutation,
   useUpdateUserMutation,
+  useGetUserNotesQuery,
 } = userApiSlice;

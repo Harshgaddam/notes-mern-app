@@ -3,10 +3,14 @@ import Note from "../components/NoteCard";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useGetNotesQuery } from "../slices/noteSlice";
+import { useGetUserNotesQuery } from "../slices/userApiSlice";
+import { useSelector } from "react-redux";
 
 const HomeScreen = () => {
-  const { data, isLoading, error } = useGetNotesQuery();
+  const { userInfo } = useSelector((state) => state.auth) || "";
+  const userId = userInfo?._id || "";
+
+  const { data, isLoading, error } = useGetUserNotesQuery({ userId }) || [];
 
   return (
     <>
@@ -15,14 +19,12 @@ const HomeScreen = () => {
           <Loader />
         </div>
       ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.error}
-        </Message>
+        <Loader />
       ) : (
         <>
           <Row>
             {data.map((note) => (
-              <Col key={note._id} sm={12} md={12} lg={12} xl={12}>
+              <Col key={note._id} xs={12}>
                 <Note note={note} />
               </Col>
             ))}

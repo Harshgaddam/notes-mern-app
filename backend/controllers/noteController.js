@@ -7,7 +7,10 @@ const getNotes = asyncHandler(async (req, res) => {
 });
 
 const getNoteById = asyncHandler(async (req, res) => {
-  const note = await Note.findById(req.params.id);
+  const note = await Note.findById(req.noteId);
+  if (!note) {
+    return res.status(404).json({ message: "Note not found" });
+  }
   res.send(note);
 });
 

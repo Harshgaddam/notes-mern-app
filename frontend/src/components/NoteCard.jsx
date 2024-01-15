@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 const Note = ({ note }) => {
   return (
-    <LinkContainer to={`/api/note/${note._id}`}>
+    <LinkContainer to={`/${note._id}`}>
       <Card>
         <Card.Body>
           <Card.Title as="div">

@@ -4,6 +4,6 @@ const router = express.Router();
 import { getNotes, getNoteById } from "../controllers/noteController.js";
 
 router.get("/", getNotes);
-router.get("/:id", getNoteById);
+router.get("/:_id", getNoteById);
 
 export default router;

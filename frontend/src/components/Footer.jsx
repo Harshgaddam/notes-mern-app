@@ -1,24 +1,22 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+
   const openNewNote = () => {
     navigate("/note");
   };
 
   return (
-    <footer>
+    <footer className="fixed-bottom py-3">
       <Container>
         <Row>
-          <Col className="text-center py-3">
-            <p>ProShop &copy; {currentYear}</p>
-          </Col>
-          <Col xs={1} className="text-center">
-            <Button onClick={openNewNote}>
+          <Col lg={10} md={10} xs={10}></Col>
+          <Col className="text-right">
+            <Button onClick={openNewNote} variant="primary">
               <FaPlus />
             </Button>
           </Col>
@@ -27,4 +25,5 @@ const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;

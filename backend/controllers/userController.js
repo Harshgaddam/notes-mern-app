@@ -1,6 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
+import Note from "../models/noteModel.js";
 import generateToken from "../utils/generateToken.js";
+import { getNoteById, getNotes } from "./noteController.js";
 
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -45,11 +47,19 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 const getUserNotes = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
   const user = await User.findById(req.params.id);
   if (!user) {
     return res.send("User not found");
   }
-  res.json(user.notes);
+  const notes = await Note.find({});
+  let result = [];
+  for (const note of notes) {
+    console.log(note.user, userId);
+    if (note.user.toString() !== userId) continue;
+    result.push(note);
+  }
+  res.send(result);
 });
 
 const authUser = asyncHandler(async (req, res) => {

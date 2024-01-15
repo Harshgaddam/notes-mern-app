@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useProfileMutation } from "../slices/userApiSlice";
 import { useUpdateUserMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
 
@@ -37,9 +36,9 @@ const ProfileScreen = () => {
           password,
         }).unwrap();
         dispatch(setCredentials({ ...res }));
-        toast.success("Profile updated successfully");
+        toast.success("Profile Updated");
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(err.data.message);
       }
     }
   };
