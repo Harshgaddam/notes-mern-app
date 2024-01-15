@@ -2,7 +2,6 @@ import { Row, Col } from "react-bootstrap";
 import Note from "../components/NoteCard";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
-import Message from "../components/Message";
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { useSelector } from "react-redux";
 

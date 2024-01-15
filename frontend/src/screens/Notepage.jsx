@@ -1,5 +1,7 @@
-import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addNote } from "../slices/noteSlice";
+import { useState } from "react";
 
 const NotePage = () => {
   const [note, setNote] = useState({
@@ -13,15 +15,17 @@ const NotePage = () => {
     setNote((prevNote) => ({ ...prevNote, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+
+  const submitHandler = (e) => {
     e.preventDefault();
-    // Add your logic to handle the submitted note, e.g., save to a database or state
+    dispatch(addNote(note));
     console.log("Submitted Note:", note);
   };
 
   return (
     <Container className="mt-5">
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={submitHandler}>
         <Form.Group controlId="noteTitle">
           <Form.Label>Title</Form.Label>
           <Form.Control

@@ -55,7 +55,6 @@ const getUserNotes = asyncHandler(async (req, res) => {
   const notes = await Note.find({});
   let result = [];
   for (const note of notes) {
-    console.log(note.user, userId);
     if (note.user.toString() !== userId) continue;
     result.push(note);
   }
