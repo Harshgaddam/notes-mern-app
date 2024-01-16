@@ -52,6 +52,7 @@ export const noteSliceActions = createSlice({
       const existingNoteIndex = state.myNotes.findIndex(
         (note) => note._id === newNote._id
       );
+      console.log(existingNoteIndex);
       if (existingNoteIndex === -1) {
         state.myNotes.push(newNote);
         localStorage.setItem("notes", JSON.stringify(state));

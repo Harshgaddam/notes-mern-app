@@ -4,12 +4,15 @@ import { useSelector } from "react-redux";
 import { useUpdateNoteMutation } from "../slices/noteSlice";
 import { useParams } from "react-router-dom";
 import { addNote } from "../slices/noteSlice";
+import { useDispatch } from "react-redux";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo._id || "";
   const { _id: noteId } = useParams();
   console.log("noteId", noteId, userId);
+
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -23,7 +26,7 @@ const NotePage = () => {
     setTitle(stateNote.title);
     setDescription(stateNote.description);
     setContent(stateNote.content);
-  }, []);
+  }, [stateNote]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -31,11 +34,6 @@ const NotePage = () => {
     if (name === "title") setTitle(value);
     if (name === "description") setDescription(value);
     if (name === "content") setContent(value);
-    addNote({
-      title: title,
-      description: description,
-      content: content,
-    });
   };
 
   const [updateNote] = useUpdateNoteMutation();
@@ -54,6 +52,14 @@ const NotePage = () => {
     } catch (error) {
       console.log(error);
     }
+    dispatch(
+      addNote({
+        _id: noteId,
+        title: title,
+        description: description,
+        content: content,
+      })
+    );
   };
 
   return (
