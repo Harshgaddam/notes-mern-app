@@ -4,12 +4,29 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addNote } from "../slices/noteSlice";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo?._id || "";
 
   const { data, isLoading, error } = useGetUserNotesQuery({ userId }) || [];
+
+  const dispatch = useDispatch();
+
+  if (data) {
+    data.map((note) => {
+      dispatch(
+        addNote({
+          _id: note._id,
+          title: note.title,
+          description: note.description,
+          content: note.content,
+        })
+      );
+    });
+  }
 
   return (
     <>

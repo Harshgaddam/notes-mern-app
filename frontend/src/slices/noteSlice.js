@@ -30,6 +30,16 @@ export const noteSlice = apiSlice.injectEndpoints({
         console.log("Data received from saveNote mutation:", data);
       },
     }),
+    updateNote: builder.mutation({
+      query: (data) => ({
+        url: `${NOTES_URL}/updateNote`,
+        method: "PUT",
+        body: data,
+      }),
+      onQueryStarted: (data) => {
+        console.log("Data received from updateNote mutation:", data);
+      },
+    }),
   }),
 });
 
@@ -38,15 +48,27 @@ export const noteSliceActions = createSlice({
   initialState,
   reducers: {
     addNote: (state, action) => {
-      console.log("addNote", action.payload);
-      state.myNotes.push(action.payload);
-      localStorage.setItem("notes", JSON.stringify(state));
+      const newNote = action.payload;
+      const existingNoteIndex = state.myNotes.findIndex(
+        (note) => note._id === newNote._id
+      );
+      if (existingNoteIndex === -1) {
+        state.myNotes.push(newNote);
+        localStorage.setItem("notes", JSON.stringify(state));
+      } else {
+        state.myNotes[existingNoteIndex] = newNote;
+        localStorage.setItem("notes", JSON.stringify(state));
+      }
     },
   },
 });
 
-export const { useGetNotesQuery, useGetNoteByIdQuery, useSaveNoteMutation } =
-  noteSlice;
+export const {
+  useGetNotesQuery,
+  useGetNoteByIdQuery,
+  useSaveNoteMutation,
+  useUpdateNoteMutation,
+} = noteSlice;
 
 export const { addNote } = noteSliceActions.actions;
 

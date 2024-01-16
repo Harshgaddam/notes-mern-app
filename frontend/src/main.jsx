@@ -13,13 +13,14 @@ import { Provider } from "react-redux";
 import store from "./store.js";
 import LoginScreen from "./screens/LoginScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
+import DisplayNote from "./screens/DisplayNote.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<HomeScreen />} />
+      <Route path="/:_id" element={<DisplayNote />} />
       <Route path="/note" element={<NotePage />} />
-      <Route path="/:id" element={<NotePage />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
     </Route>

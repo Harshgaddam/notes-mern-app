@@ -30,4 +30,17 @@ const saveNote = asyncHandler(async (req, res) => {
   res.send(newNote);
 });
 
-export { getNotes, getNoteById, saveNote };
+const updateNote = asyncHandler(async (req, res) => {
+  const { noteId, userId, title, description, content } = req.body;
+  const note = await Note.findById(noteId);
+  if (!note) {
+    return res.status(404).json({ message: "Note not found" });
+  }
+  note.title = title;
+  note.description = description;
+  note.body = content;
+  await note.save();
+  res.send(note);
+});
+
+export { getNotes, getNoteById, saveNote, updateNote };
