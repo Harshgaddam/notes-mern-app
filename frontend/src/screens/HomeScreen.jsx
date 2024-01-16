@@ -4,12 +4,19 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo?._id || "";
 
-  const { data, isLoading, error } = useGetUserNotesQuery({ userId }) || [];
+  const { data, isLoading, error, refetch } =
+    useGetUserNotesQuery({ userId }) || [];
+
+  useEffect(() => {
+    // Trigger refetch when the component mounts
+    refetch();
+  }, [userId, refetch]);
 
   return (
     <>

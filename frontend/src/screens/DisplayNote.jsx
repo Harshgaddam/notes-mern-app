@@ -85,7 +85,6 @@ const NotePage = () => {
             name="description"
             value={description}
             onChange={handleChange}
-            required
           />
         </Form.Group>
 
@@ -98,7 +97,6 @@ const NotePage = () => {
             name="content"
             value={content}
             onChange={handleChange}
-            required
           />
         </Form.Group>
         <br />
