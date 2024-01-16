@@ -27,7 +27,7 @@ const saveNote = asyncHandler(async (req, res) => {
   await newNote.save();
   user.notes.push(newNote._id);
   await user.save();
-  res.send(newNote);
+  res.send(newNote._id);
 });
 
 const updateNote = asyncHandler(async (req, res) => {

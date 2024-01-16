@@ -1,8 +1,6 @@
 import { Container, Form, Button } from "react-bootstrap";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import { addNote, useSaveNoteMutation } from "../slices/noteSlice";
 
 const NewNotePage = () => {
@@ -12,30 +10,72 @@ const NewNotePage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
+  const [randomId, setRandomId] = useState(""); // State to hold randomId
+
+  const stateNote = useSelector((state) =>
+    state.notes.myNotes.find((note) => note._id === randomId)
+  );
+
+  useEffect(() => {
+    setTitle(stateNote?.title || ""); // Use optional chaining to avoid errors
+    setDescription(stateNote?.description || "");
+    setContent(stateNote?.content || "");
+  }, [stateNote]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const newRandomId = 1;
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setRandomId(newRandomId);
+    dispatch(
+      addNote({
+        _id: randomId,
+        title: title,
+        description: description,
+        content: content,
+      })
+    );
+    console.log("Done");
+  }, [title, description, content, dispatch, randomId]);
+
   const handleChange = (e) => {
+    e.preventDefault();
     const { name, value } = e.target;
-    setNote((prevNote) => ({ ...prevNote, [name]: value }));
+    if (name === "title") setTitle(value);
+    if (name === "description") setDescription(value);
+    if (name === "content") setContent(value);
+    dispatch(
+      addNote({
+        _id: randomId,
+        title: title,
+        description: description,
+        content: content,
+      })
+    );
   };
 
-  const [saveNote] = useSaveNoteMutation({ userId, note });
+  const [saveNote] = useSaveNoteMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const newNote = {
+      _id: randomId,
+      userId: userId,
+      title: title,
+      description: description,
+      content: content,
+    };
     try {
-      console.log("note", note, userId);
-      const newNote = {
-        userId: userId,
-        title: note.title,
-        description: note.description,
-        content: note.content,
-      };
-      await saveNote(newNote).unwrap();
+      const noteId = await saveNote(newNote).unwrap();
+      newNote._id = noteId;
+      setRandomId(noteId); // Update the randomId in the state after saving the note
     } catch (error) {
       console.log(error);
     }
-    dispatch(addNote(note));
+    dispatch(addNote(newNote));
   };
 
   return (
@@ -61,7 +101,6 @@ const NewNotePage = () => {
             name="description"
             value={description}
             onChange={handleChange}
-            required
           />
         </Form.Group>
 
@@ -74,7 +113,6 @@ const NewNotePage = () => {
             name="content"
             value={content}
             onChange={handleChange}
-            required
           />
         </Form.Group>
         <br />
