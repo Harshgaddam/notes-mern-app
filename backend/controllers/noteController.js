@@ -43,4 +43,14 @@ const updateNote = asyncHandler(async (req, res) => {
   res.send(note);
 });
 
-export { getNotes, getNoteById, saveNote, updateNote };
+const deleteNote = asyncHandler(async (req, res) => {
+  const note = await Note.findById(req.params._id);
+  if (!note) {
+    return res.status(404).json({ message: "Note not found" });
+  }
+  console.log(note);
+  await Note.deleteOne({ _id: req.params._id });
+  res.send({ message: "Note removed" });
+});
+
+export { getNotes, getNoteById, saveNote, updateNote, deleteNote };

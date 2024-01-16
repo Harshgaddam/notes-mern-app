@@ -40,6 +40,15 @@ export const noteSlice = apiSlice.injectEndpoints({
         console.log("Data received from updateNote mutation:", data);
       },
     }),
+    deleteNote: builder.mutation({
+      query: (noteId) => ({
+        url: `${NOTES_URL}/${noteId}`,
+        method: "DELETE",
+      }),
+      onQueryStarted: (data) => {
+        console.log("Data received from deleteNote mutation:", data);
+      },
+    }),
   }),
 });
 
@@ -61,6 +70,16 @@ export const noteSliceActions = createSlice({
         localStorage.setItem("notes", JSON.stringify(state));
       }
     },
+    removeNoteFromState: (state, action) => {
+      const noteId = action.payload;
+      const existingNoteIndex = state.myNotes.findIndex(
+        (note) => note._id === noteId
+      );
+      if (existingNoteIndex !== -1) {
+        state.myNotes.splice(existingNoteIndex, 1);
+        localStorage.setItem("notes", JSON.stringify(state.myNotes));
+      }
+    },
   },
 });
 
@@ -69,8 +88,9 @@ export const {
   useGetNoteByIdQuery,
   useSaveNoteMutation,
   useUpdateNoteMutation,
+  useDeleteNoteMutation,
 } = noteSlice;
 
-export const { addNote } = noteSliceActions.actions;
+export const { addNote, removeNoteFromState } = noteSliceActions.actions;
 
 export default noteSliceActions.reducer;
