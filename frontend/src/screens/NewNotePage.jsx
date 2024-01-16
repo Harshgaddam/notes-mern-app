@@ -1,65 +1,41 @@
 import { Container, Form, Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useUpdateNoteMutation } from "../slices/noteSlice";
-import { useParams } from "react-router-dom";
-import { addNote } from "../slices/noteSlice";
-import { useDispatch } from "react-redux";
 
-const NotePage = () => {
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { addNote, useSaveNoteMutation } from "../slices/noteSlice";
+
+const NewNotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo._id || "";
-  const { _id: noteId } = useParams();
-  console.log("noteId", noteId, userId);
-
-  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
 
-  const stateNote = useSelector((state) =>
-    state.notes.myNotes.find((note) => note._id === noteId)
-  );
-
-  useEffect(() => {
-    setTitle(stateNote.title);
-    setDescription(stateNote.description);
-    setContent(stateNote.content);
-  }, [stateNote]);
-
+  const dispatch = useDispatch();
   const handleChange = (e) => {
-    e.preventDefault();
     const { name, value } = e.target;
-    if (name === "title") setTitle(value);
-    if (name === "description") setDescription(value);
-    if (name === "content") setContent(value);
+    setNote((prevNote) => ({ ...prevNote, [name]: value }));
   };
 
-  const [updateNote] = useUpdateNoteMutation();
+  const [saveNote] = useSaveNoteMutation({ userId, note });
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const newNote = {
-      noteId: noteId,
-      userId: userId,
-      title: title,
-      description: description,
-      content: content,
-    };
     try {
-      await updateNote(newNote).unwrap();
+      console.log("note", note, userId);
+      const newNote = {
+        userId: userId,
+        title: note.title,
+        description: note.description,
+        content: note.content,
+      };
+      await saveNote(newNote).unwrap();
     } catch (error) {
       console.log(error);
     }
-    dispatch(
-      addNote({
-        _id: noteId,
-        title: title,
-        description: description,
-        content: content,
-      })
-    );
+    dispatch(addNote(note));
   };
 
   return (
@@ -85,6 +61,7 @@ const NotePage = () => {
             name="description"
             value={description}
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
@@ -97,6 +74,7 @@ const NotePage = () => {
             name="content"
             value={content}
             onChange={handleChange}
+            required
           />
         </Form.Group>
         <br />
@@ -108,4 +86,4 @@ const NotePage = () => {
   );
 };
 
-export default NotePage;
+export default NewNotePage;
