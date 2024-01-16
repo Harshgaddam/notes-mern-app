@@ -50,7 +50,7 @@ const deleteNote = asyncHandler(async (req, res) => {
   }
   console.log(note);
   await Note.deleteOne({ _id: req.params._id });
-  res.send({ message: "Note removed" });
+  res.send({ message: "Note deleted" });
 });
 
 export { getNotes, getNoteById, saveNote, updateNote, deleteNote };

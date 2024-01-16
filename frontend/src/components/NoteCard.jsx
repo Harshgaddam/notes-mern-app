@@ -6,20 +6,24 @@ import {
   useDeleteNoteMutation,
   removeNoteFromState,
 } from "../slices/noteSlice";
+import { useRemoveNoteMutation } from "../slices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 const Note = ({ note }) => {
-  const userInfo = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo._id;
   const dispatch = useDispatch();
   const [deleteNote] = useDeleteNoteMutation();
+  const [removeNote] = useRemoveNoteMutation();
   const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Stop the click event from propagating to the parent LinkContainer
     console.log("Delete note", note._id);
     const noteId = note._id;
     console.log("Note id", noteId);
     await deleteNote(noteId).unwrap();
+    console.log(userId, noteId);
+    await removeNote({ userId: userId, noteId: noteId }).unwrap();
     dispatch(removeNoteFromState());
 
     window.location.reload(); // Refresh the page

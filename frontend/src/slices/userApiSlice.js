@@ -43,6 +43,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    removeNote: builder.mutation({
+      query: ({ userId, noteId }) => ({
+        url: `${USERS_URL}/removeNote`,
+        method: "POST",
+        body: { userId, noteId },
+      }),
+    }),
   }),
 });
 
@@ -53,4 +60,5 @@ export const {
   useProfileMutation,
   useUpdateUserMutation,
   useGetUserNotesQuery,
+  useRemoveNoteMutation,
 } = userApiSlice;

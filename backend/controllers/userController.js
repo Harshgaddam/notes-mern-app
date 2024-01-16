@@ -119,6 +119,19 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
+const removeNote = asyncHandler(async (req, res) => {
+  const { userId, noteId } = req.body;
+  console.log(req.body);
+  console.log(userId, noteId);
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  user.notes.pull(noteId);
+  await user.save();
+  res.send({ message: "Note removed" });
+});
+
 export {
   getUserById,
   updateUser,
@@ -127,4 +140,5 @@ export {
   authUser,
   logoutUser,
   registerUser,
+  removeNote,
 };

@@ -43,7 +43,7 @@ const importData = async () => {
 const destroyData = async () => {
   try {
     await User.deleteMany();
-
+    await Note.deleteMany();
     console.log("Data Destroyed!".red.inverse);
     process.exit();
   } catch (error) {

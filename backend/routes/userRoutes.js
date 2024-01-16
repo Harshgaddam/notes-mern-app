@@ -8,6 +8,7 @@ import {
   authUser,
   logoutUser,
   registerUser,
+  removeNote,
 } from "../controllers/userController.js";
 
 router
@@ -19,6 +20,7 @@ router
   .post("/login", authUser)
   .post("/register", registerUser)
   .post("/logout", logoutUser)
-  .put("/profile", updateUser);
+  .put("/profile", updateUser)
+  .post("/removeNote", removeNote);
 
 export default router;
