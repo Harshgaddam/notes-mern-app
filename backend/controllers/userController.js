@@ -51,7 +51,7 @@ const getUserNotes = asyncHandler(async (req, res) => {
   if (!user) {
     return res.send("User not found");
   }
-  const notes = await Note.find({});
+  const notes = await Note.find({}).sort({ createdAt: -1 }).exec();
   let result = [];
   for (const note of notes) {
     if (note.user.toString() !== userId) continue;

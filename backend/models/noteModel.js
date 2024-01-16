@@ -14,7 +14,7 @@ const notesSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    body: {
+    content: {
       type: String,
       required: false,
     },

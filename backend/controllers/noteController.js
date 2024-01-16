@@ -22,7 +22,7 @@ const saveNote = asyncHandler(async (req, res) => {
     user: userId,
     title,
     description,
-    body: content,
+    content: content,
   });
   await newNote.save();
   user.notes.push(newNote._id);
