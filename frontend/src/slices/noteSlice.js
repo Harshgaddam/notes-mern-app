@@ -77,7 +77,7 @@ export const noteSliceActions = createSlice({
       );
       if (existingNoteIndex !== -1) {
         state.myNotes.splice(existingNoteIndex, 1);
-        localStorage.setItem("notes", JSON.stringify(state.myNotes));
+        localStorage.setItem("notes", JSON.stringify(state));
       }
     },
   },

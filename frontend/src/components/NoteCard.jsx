@@ -20,7 +20,8 @@ const Note = ({ note }) => {
     const noteId = note._id;
     console.log("Note id", noteId);
     await deleteNote(noteId).unwrap();
-    dispatch(removeNoteFromState(noteId));
+    dispatch(removeNoteFromState());
+
     window.location.reload(); // Refresh the page
   };
 
