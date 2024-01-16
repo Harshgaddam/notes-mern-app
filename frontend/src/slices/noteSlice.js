@@ -20,6 +20,13 @@ export const noteSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    saveNote: builder.mutation({
+      query: ({ userId, note }) => ({
+        url: `${NOTES_URL}/saveNote`,
+        method: "POST",
+        data: { userId, note },
+      }),
+    }),
   }),
 });
 
@@ -30,13 +37,14 @@ export const noteSliceActions = createSlice({
     addNote: (state, action) => {
       console.log("addNote", action.payload);
       state.myNotes.push(action.payload);
-      localStorage.setItem("notes", JSON.stringify(state.myNotes));
+      localStorage.setItem("notes", JSON.stringify(state));
     },
   },
 });
 
-export const { useGetNotesQuery, useGetNoteByIdQuery } = noteSlice;
+export const { useGetNotesQuery, useGetNoteByIdQuery, useSaveNoteMutation } =
+  noteSlice;
 
-export const { initial, addNote } = noteSliceActions.actions;
+export const { addNote } = noteSliceActions.actions;
 
 export default noteSliceActions.reducer;

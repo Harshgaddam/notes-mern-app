@@ -1,26 +1,37 @@
 import { Container, Form, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
 import { addNote } from "../slices/noteSlice";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+// import { useSaveNoteMutation } from "../slices/noteSlice";
 
 const NotePage = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo._id || "";
+
   const [note, setNote] = useState({
     title: "",
     description: "",
-    text: "",
+    content: "",
   });
 
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNote((prevNote) => ({ ...prevNote, [name]: value }));
   };
 
-  const dispatch = useDispatch();
+  // const [saveNote] = useSaveNoteMutation({ userId, note } );
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     dispatch(addNote(note));
-    console.log("Submitted Note:", note);
+    try {
+      console.log("note", note, userId);
+      // await saveNote({ userId, note });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -56,7 +67,7 @@ const NotePage = () => {
             as="textarea"
             rows={5}
             placeholder="Enter your note"
-            name="text"
+            name="content"
             value={note.text}
             onChange={handleChange}
             required
