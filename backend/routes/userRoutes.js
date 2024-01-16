@@ -7,6 +7,7 @@ import {
   getUserNotes,
   authUser,
   logoutUser,
+  registerUser,
 } from "../controllers/userController.js";
 
 router
@@ -16,6 +17,7 @@ router
 router.delete("/:id", deleteUser);
 router
   .post("/login", authUser)
+  .post("/register", registerUser)
   .post("/logout", logoutUser)
   .put("/profile", updateUser);
 

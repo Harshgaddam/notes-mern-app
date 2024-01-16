@@ -1,9 +1,9 @@
 import { Container, Form, Button } from "react-bootstrap";
-import { addNote } from "../slices/noteSlice";
+
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useSaveNoteMutation } from "../slices/noteSlice";
+import { useSelector, useDispatch } from "react-redux";
+
+import { addNote, useSaveNoteMutation } from "../slices/noteSlice";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);

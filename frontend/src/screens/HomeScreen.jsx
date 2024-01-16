@@ -1,10 +1,13 @@
 import { Row, Col } from "react-bootstrap";
+
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 import Note from "../components/NoteCard";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
@@ -14,7 +17,6 @@ const HomeScreen = () => {
     useGetUserNotesQuery({ userId }) || [];
 
   useEffect(() => {
-    // Trigger refetch when the component mounts
     refetch();
   }, [userId, refetch]);
 

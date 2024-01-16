@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+
 import { useUpdateUserMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
+
+import Message from "../components/Message";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -26,7 +29,7 @@ const ProfileScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      alert("Passwords do not match");
     } else {
       try {
         const res = await updateUser({
@@ -36,9 +39,9 @@ const ProfileScreen = () => {
           password,
         }).unwrap();
         dispatch(setCredentials({ ...res }));
-        toast.success("Profile Updated");
+        alert("Profile Updated");
       } catch (err) {
-        toast.error(err.data.message);
+        <Message>{err?.data?.message}</Message>;
       }
     }
   };

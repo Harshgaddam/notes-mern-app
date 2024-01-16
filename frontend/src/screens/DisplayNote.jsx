@@ -1,16 +1,17 @@
 import { Container, Form, Button } from "react-bootstrap";
+
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useUpdateNoteMutation } from "../slices/noteSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addNote } from "../slices/noteSlice";
-import { useDispatch } from "react-redux";
+
+import { addNote, useUpdateNoteMutation } from "../slices/noteSlice";
+
+import Message from "../components/Message";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo._id || "";
   const { _id: noteId } = useParams();
-  console.log("noteId", noteId, userId);
 
   const dispatch = useDispatch();
 
@@ -50,7 +51,7 @@ const NotePage = () => {
     try {
       await updateNote(newNote).unwrap();
     } catch (error) {
-      console.log(error);
+      <Message>{error?.data?.message}</Message>;
     }
     dispatch(
       addNote({
