@@ -2,7 +2,6 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
 import Note from "../models/noteModel.js";
 import generateToken from "../utils/generateToken.js";
-import { getNoteById, getNotes } from "./noteController.js";
 
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);

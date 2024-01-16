@@ -16,17 +16,13 @@ const getNoteById = asyncHandler(async (req, res) => {
 });
 
 const saveNote = asyncHandler(async (req, res) => {
-  console.log(req);
-  const userId = req.body.userId;
+  const { userId, title, description, content } = req.body;
   const user = await User.findById(userId);
-  const title = req.body.title;
-  const description = req.body.description;
-  const content = req.body.content;
   const newNote = await Note.create({
     user: userId,
     title,
     description,
-    content,
+    body: content,
   });
   await newNote.save();
   user.notes.push(newNote._id);

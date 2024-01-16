@@ -21,11 +21,14 @@ export const noteSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     saveNote: builder.mutation({
-      query: ({ userId, note }) => ({
+      query: (data) => ({
         url: `${NOTES_URL}/saveNote`,
-        method: "POST",
-        data: { userId, note },
+        method: "PUT",
+        body: data,
       }),
+      onQueryStarted: (data) => {
+        console.log("Data received from saveNote mutation:", data);
+      },
     }),
   }),
 });

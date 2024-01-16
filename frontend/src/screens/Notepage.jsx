@@ -3,7 +3,7 @@ import { addNote } from "../slices/noteSlice";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-// import { useSaveNoteMutation } from "../slices/noteSlice";
+import { useSaveNoteMutation } from "../slices/noteSlice";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -21,17 +21,23 @@ const NotePage = () => {
     setNote((prevNote) => ({ ...prevNote, [name]: value }));
   };
 
-  // const [saveNote] = useSaveNoteMutation({ userId, note } );
+  const [saveNote] = useSaveNoteMutation({ userId, note });
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(addNote(note));
     try {
       console.log("note", note, userId);
-      // await saveNote({ userId, note });
+      const newNote = {
+        userId: userId,
+        title: note.title,
+        description: note.description,
+        content: note.content,
+      };
+      await saveNote(newNote).unwrap();
     } catch (error) {
       console.log(error);
     }
+    dispatch(addNote(note));
   };
 
   return (

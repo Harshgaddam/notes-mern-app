@@ -9,6 +9,6 @@ import {
 
 router.get("/", getNotes);
 router.get("/:_id", getNoteById);
-router.post("/saveNote", saveNote);
+router.put("/saveNote", saveNote);
 
 export default router;
