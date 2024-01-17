@@ -22,7 +22,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userInfo) {
+      if (userInfo || data) {
         refetch();
         try {
           if (data) {

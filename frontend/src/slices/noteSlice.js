@@ -59,20 +59,17 @@ export const noteSliceActions = createSlice({
     addNote: (state, action) => {
       const newNote = action.payload;
       const existingNoteIndex = state.myNotes.findIndex(
-        (note) => note._id === newNote._id
+        (note) => note.noteId === newNote.noteId
       );
-      if (existingNoteIndex === -1) {
-        state.myNotes.push(newNote);
-        localStorage.setItem("notes", JSON.stringify(state));
-      } else {
-        state.myNotes[existingNoteIndex] = newNote;
-        localStorage.setItem("notes", JSON.stringify(state));
-      }
+      if (existingNoteIndex === -1) state.myNotes.push(newNote);
+      else state.myNotes[existingNoteIndex] = newNote;
+
+      localStorage.setItem("notes", JSON.stringify(state));
     },
     removeNoteFromState: (state, action) => {
       const noteId = action.payload;
       const existingNoteIndex = state.myNotes.findIndex(
-        (note) => note._id === noteId
+        (note) => note.noteId === noteId
       );
       if (existingNoteIndex !== -1) {
         state.myNotes.splice(existingNoteIndex, 1);

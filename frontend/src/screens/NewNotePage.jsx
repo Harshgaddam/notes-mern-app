@@ -3,7 +3,11 @@ import { Container, Form, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { addNote, useSaveNoteMutation } from "../slices/noteSlice";
+import {
+  addNote,
+  useSaveNoteMutation,
+  useUpdateNoteMutation,
+} from "../slices/noteSlice";
 
 const NewNotePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -13,14 +17,14 @@ const NewNotePage = () => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState("");
-  const [randomId, setRandomId] = useState(1); // State to hold randomId
+  const [noteId, setNoteId] = useState(1); // State to hold randomId
 
   const stateNote = useSelector((state) =>
-    state.notes.myNotes.find((note) => note._id === randomId)
+    state.notes.myNotes.find((note) => note.noteId === noteId)
   );
 
   useEffect(() => {
-    setTitle(stateNote?.title || ""); // Use optional chaining to avoid errors
+    setTitle(stateNote?.title || "");
     setDescription(stateNote?.description || "");
     setContent(stateNote?.content || "");
     setFile(stateNote?.file || "");
@@ -29,15 +33,14 @@ const NewNotePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const newRandomId = 1;
     setTitle("");
     setDescription("");
     setContent("");
     setFile("");
-    setRandomId(newRandomId);
+    setNoteId(noteId);
     dispatch(
       addNote({
-        _id: randomId,
+        noteId: noteId,
         title: title,
         description: description,
         content: content,
@@ -45,9 +48,10 @@ const NewNotePage = () => {
       })
     );
     console.log("Done");
-  }, [title, description, content, file, dispatch, randomId]);
+  }, [title, description, content, file, noteId, dispatch]);
 
   const [saveNote] = useSaveNoteMutation();
+  const [updateNote] = useUpdateNoteMutation();
 
   const handleChange = async (e) => {
     e.preventDefault();
@@ -57,21 +61,12 @@ const NewNotePage = () => {
     if (name === "description") setDescription(value);
     if (name === "content") setContent(value);
     if (name === "file") setFile(value);
-    dispatch(
-      addNote({
-        _id: randomId,
-        title: title,
-        description: description,
-        content: content,
-        file: file,
-      })
-    );
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
     const newNote = {
-      _id: randomId,
+      noteId: noteId,
       userId: userId,
       title: title,
       description: description,
@@ -79,9 +74,11 @@ const NewNotePage = () => {
       file: file,
     };
     try {
-      const noteId = await saveNote(newNote).unwrap();
-      newNote._id = noteId;
-      setRandomId(noteId); // Update the randomId in the state after saving the note
+      let retrievedId = noteId;
+      if (noteId === 1) retrievedId = await saveNote(newNote).unwrap();
+      else retrievedId = await updateNote(newNote).unwrap();
+      newNote.noteId = retrievedId;
+      setNoteId(retrievedId);
     } catch (error) {
       console.log(error);
     }

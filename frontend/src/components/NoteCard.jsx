@@ -23,8 +23,7 @@ const Note = ({ note }) => {
   const [removeNote] = useRemoveNoteMutation();
 
   const handleDeleteClick = async (e) => {
-    e.stopPropagation(); // Stop the click event from propagating to the parent LinkContainer
-    // console.log("Delete note", note._id);
+    e.stopPropagation();
 
     await deleteNote(noteId).unwrap();
     await removeNote({ userId: userId, noteId: noteId }).unwrap();

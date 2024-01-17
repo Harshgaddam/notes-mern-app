@@ -41,7 +41,7 @@ const updateNote = asyncHandler(async (req, res) => {
   note.description = description;
   note.body = content;
   await note.save();
-  res.send(note);
+  res.send(note._id);
 });
 
 const deleteNote = asyncHandler(async (req, res) => {
