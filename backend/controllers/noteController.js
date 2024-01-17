@@ -18,15 +18,15 @@ const getNoteById = asyncHandler(async (req, res) => {
 const createNote = asyncHandler(async (req, res) => {
   const { userId } = req.body;
   console.log(req.body);
-  const newNote = Note.create({
+  const newNote = await Note.create({
     user: userId,
     title: "Untitled",
     description: "",
     content: "",
     file: "",
   });
-  await newNote.save();
   console.log(newNote);
+  await newNote.save();
   res.json(newNote._id);
 });
 

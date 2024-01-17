@@ -17,6 +17,7 @@ const NotePage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
+  const [file, setFile] = useState("");
 
   const stateNote = useSelector((state) =>
     state.notes.myNotes.find((note) => note.noteId === noteId)
@@ -26,6 +27,7 @@ const NotePage = () => {
     setTitle(stateNote.title);
     setDescription(stateNote.description);
     setContent(stateNote.content);
+    setFile(stateNote.file);
   }, [stateNote]);
 
   const handleChange = (e) => {
@@ -34,6 +36,7 @@ const NotePage = () => {
     if (name === "title") setTitle(value);
     if (name === "description") setDescription(value);
     if (name === "content") setContent(value);
+    if (name === "file") setFile(value);
   };
 
   const [updateNote] = useUpdateNoteMutation();
@@ -46,6 +49,7 @@ const NotePage = () => {
       title: title,
       description: description,
       content: content,
+      file: file,
     };
     try {
       await updateNote(newNote).unwrap();
@@ -54,10 +58,11 @@ const NotePage = () => {
     }
     dispatch(
       addNote({
-        _id: noteId,
+        noteId: noteId,
         title: title,
         description: description,
         content: content,
+        file: file,
       })
     );
   };
@@ -99,6 +104,17 @@ const NotePage = () => {
             onChange={handleChange}
           />
         </Form.Group>
+
+        <Form.Group controlId="noteFile">
+          <Form.Label>File</Form.Label>
+          <Form.Control
+            type="file"
+            placeholder="Enter file"
+            name="file"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
         <br />
         <Button variant="primary" type="submit">
           Save Note

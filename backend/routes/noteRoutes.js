@@ -12,7 +12,7 @@ import {
 
 router.get("/", getNotes);
 router.get("/:_id", getNoteById);
-router.post("/createNote", createNote);
+router.put("/createNote", createNote);
 router.put("/updateNote", updateNote);
 router.put("/saveNote", saveNote);
 router.delete("/:_id", deleteNote);
