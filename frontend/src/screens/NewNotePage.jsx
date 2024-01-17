@@ -13,7 +13,7 @@ const NewNotePage = () => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState("");
-  const [randomId, setRandomId] = useState(""); // State to hold randomId
+  const [randomId, setRandomId] = useState(1); // State to hold randomId
 
   const stateNote = useSelector((state) =>
     state.notes.myNotes.find((note) => note._id === randomId)
