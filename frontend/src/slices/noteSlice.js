@@ -20,6 +20,16 @@ export const noteSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    createNote: builder.mutation({
+      query: (data) => ({
+        url: `${NOTES_URL}/createNote`,
+        method: "POST",
+        body: data,
+      }),
+      onQueryStarted: (data) => {
+        console.log("Data received from createNote mutation:", data);
+      },
+    }),
     saveNote: builder.mutation({
       query: (data) => ({
         url: `${NOTES_URL}/saveNote`,
@@ -82,6 +92,7 @@ export const noteSliceActions = createSlice({
 export const {
   useGetNotesQuery,
   useGetNoteByIdQuery,
+  useCreateNoteMutation,
   useSaveNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,

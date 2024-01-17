@@ -1,12 +1,20 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useCreateNoteMutation } from "../slices/noteSlice";
 
 const Footer = () => {
-  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth) || "";
+  const userId = userInfo?._id || "";
 
-  const openNewNote = () => {
-    navigate("/note");
+  const navigate = useNavigate();
+  const [createNote] = useCreateNoteMutation();
+  const openNewNote = async (e) => {
+    e.preventDefault();
+    const newNoteId = await createNote({ userId: userId }).unwrap();
+    console.log(newNoteId);
+    navigate(`/note/${newNoteId}`);
   };
 
   return (

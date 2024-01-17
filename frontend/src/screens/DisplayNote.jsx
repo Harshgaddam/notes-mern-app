@@ -7,7 +7,7 @@ import { addNote } from "../slices/noteSlice";
 import { useDispatch } from "react-redux";
 
 const NotePage = () => {
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo._id || "";
   const { _id: noteId } = useParams();
   console.log("noteId", noteId, userId);
@@ -19,7 +19,7 @@ const NotePage = () => {
   const [content, setContent] = useState("");
 
   const stateNote = useSelector((state) =>
-    state.notes.myNotes.find((note) => note._id === noteId)
+    state.notes.myNotes.find((note) => note.noteId === noteId)
   );
 
   useEffect(() => {
