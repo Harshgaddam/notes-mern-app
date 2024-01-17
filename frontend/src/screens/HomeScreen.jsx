@@ -3,27 +3,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Note from "../components/NoteCard";
 import Footer from "../components/Footer";
-import Loader from "../components/Loader";
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { addNote } from "../slices/noteSlice";
+import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo?._id || "";
 
-  const {
-    data = [],
-    isLoading,
-    error,
-    refetch,
-  } = useGetUserNotesQuery({ userId });
+  const { data = [] } = useGetUserNotesQuery({ userId }) || "";
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) navigate("/login");
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       if (userInfo || data) {
-        refetch();
         try {
           if (data) {
             data.map((note) =>
@@ -45,27 +44,18 @@ const HomeScreen = () => {
     };
 
     userInfo && fetchData();
-  }, [userInfo, data, dispatch, refetch]);
+  }, [userInfo, data, dispatch]);
 
   return (
     <>
-      {isLoading ? (
-        <div>
-          <Loader />
-        </div>
-      ) : error ? (
-        <Loader />
-      ) : (
-        <>
-          <Row>
-            {data.map((note) => (
-              <Col key={note._id} xs={12}>
-                <Note note={note} />
-              </Col>
-            ))}
-          </Row>
-        </>
-      )}
+      <Row>
+        {data.map((note) => (
+          <Col key={note._id} xs={12}>
+            <Note note={note} />
+          </Col>
+        ))}
+      </Row>
+
       <Footer />
     </>
   );

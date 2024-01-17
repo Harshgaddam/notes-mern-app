@@ -70,7 +70,7 @@ const NotePage = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-3">
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="noteTitle">
           <Form.Label>Title</Form.Label>

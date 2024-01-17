@@ -29,8 +29,6 @@ const Note = ({ note }) => {
     await removeNote({ userId: userId, noteId: noteId }).unwrap();
 
     dispatch(removeNoteFromState(noteId));
-
-    window.location.reload(); // Refresh the page
   };
 
   return (
