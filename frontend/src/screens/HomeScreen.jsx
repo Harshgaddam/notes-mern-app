@@ -44,7 +44,7 @@ const HomeScreen = () => {
       }
     };
 
-    fetchData();
+    userInfo && fetchData();
   }, [userInfo, data, dispatch, refetch]);
 
   return (
