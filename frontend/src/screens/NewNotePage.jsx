@@ -1,6 +1,8 @@
 import { Container, Form, Button } from "react-bootstrap";
+
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { addNote, useSaveNoteMutation } from "../slices/noteSlice";
 
 const NewNotePage = () => {

@@ -3,7 +3,6 @@ import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
 
   const openNewNote = () => {
