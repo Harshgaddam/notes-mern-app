@@ -5,6 +5,7 @@ import { useUpdateNoteMutation } from "../slices/noteSlice";
 import { useParams } from "react-router-dom";
 import { addNote } from "../slices/noteSlice";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
@@ -65,6 +66,7 @@ const NotePage = () => {
         file: file,
       })
     );
+    toast.success("Note Saved");
   };
 
   return (
