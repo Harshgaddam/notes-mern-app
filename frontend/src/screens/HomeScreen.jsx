@@ -11,24 +11,29 @@ const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo?._id || "";
 
-  const { data, isLoading, error, refetch } =
-    useGetUserNotesQuery({ userId }) || [];
+  const {
+    data = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetUserNotesQuery({ userId });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userId) {
+      if (userInfo) {
         refetch();
         try {
           if (data) {
             data.map((note) =>
               dispatch(
                 addNote({
-                  _id: note._id,
+                  noteId: note._id,
                   title: note.title,
                   description: note.description,
                   content: note.content,
+                  file: note.file,
                 })
               )
             );
@@ -40,7 +45,7 @@ const HomeScreen = () => {
     };
 
     fetchData();
-  }, [userId, data, dispatch, refetch]);
+  }, [userInfo, data, dispatch, refetch]);
 
   return (
     <>
@@ -59,9 +64,9 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
-          <Footer />
         </>
       )}
+      <Footer />
     </>
   );
 };
