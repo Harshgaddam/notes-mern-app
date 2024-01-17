@@ -17,21 +17,25 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    refetch();
     const fetchData = async () => {
-      try {
-        data.map((note) =>
-          dispatch(
-            addNote({
-              _id: note._id,
-              title: note.title,
-              description: note.description,
-              content: note.content,
-            })
-          )
-        );
-      } catch (error) {
-        console.error("Error fetching and dispatching notes:", error);
+      if (userId) {
+        refetch();
+        try {
+          if (data) {
+            data.map((note) =>
+              dispatch(
+                addNote({
+                  _id: note._id,
+                  title: note.title,
+                  description: note.description,
+                  content: note.content,
+                })
+              )
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching and dispatching notes:", error);
+        }
       }
     };
 
