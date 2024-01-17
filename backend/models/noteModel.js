@@ -18,6 +18,9 @@ const notesSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    file: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

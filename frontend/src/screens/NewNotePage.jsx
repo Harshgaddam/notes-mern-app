@@ -12,6 +12,7 @@ const NewNotePage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
+  const [file, setFile] = useState("");
   const [randomId, setRandomId] = useState(""); // State to hold randomId
 
   const stateNote = useSelector((state) =>
@@ -22,6 +23,7 @@ const NewNotePage = () => {
     setTitle(stateNote?.title || ""); // Use optional chaining to avoid errors
     setDescription(stateNote?.description || "");
     setContent(stateNote?.content || "");
+    setFile(stateNote?.file || "");
   }, [stateNote]);
 
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ const NewNotePage = () => {
     setTitle("");
     setDescription("");
     setContent("");
+    setFile("");
     setRandomId(newRandomId);
     dispatch(
       addNote({
@@ -38,28 +41,32 @@ const NewNotePage = () => {
         title: title,
         description: description,
         content: content,
+        file: file,
       })
     );
     console.log("Done");
-  }, [title, description, content, dispatch, randomId]);
+  }, [title, description, content, file, dispatch, randomId]);
 
-  const handleChange = (e) => {
+  const [saveNote] = useSaveNoteMutation();
+
+  const handleChange = async (e) => {
     e.preventDefault();
     const { name, value } = e.target;
+    console.log(name, value);
     if (name === "title") setTitle(value);
     if (name === "description") setDescription(value);
     if (name === "content") setContent(value);
+    if (name === "file") setFile(value);
     dispatch(
       addNote({
         _id: randomId,
         title: title,
         description: description,
         content: content,
+        file: file,
       })
     );
   };
-
-  const [saveNote] = useSaveNoteMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -69,6 +76,7 @@ const NewNotePage = () => {
       title: title,
       description: description,
       content: content,
+      file: file,
     };
     try {
       const noteId = await saveNote(newNote).unwrap();
@@ -117,6 +125,18 @@ const NewNotePage = () => {
             onChange={handleChange}
           />
         </Form.Group>
+
+        <Form.Group controlId="noteFile">
+          <Form.Label>File</Form.Label>
+          <Form.Control
+            type="file"
+            placeholder="Upload File"
+            name="file"
+            value={file}
+            onChange={handleChange}
+          />
+        </Form.Group>
+
         <br />
         <Button variant="primary" type="submit">
           Save Note
