@@ -40,16 +40,15 @@ const NotePage = () => {
     formData.append("file", e.target.files[0]);
 
     try {
-      const { path } = await uploadFile(formData).unwrap();
+      const { filePath } = await uploadFile(formData).unwrap();
       toast.success("File Uploaded");
-      console.log("path", path);
-      setFile(path);
+      console.log("path", filePath);
+      setFile(filePath);
     } catch (error) {
       console.log(error);
     }
     console.log(title, description, content, file);
   };
-
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;

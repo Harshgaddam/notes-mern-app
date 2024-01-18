@@ -23,8 +23,7 @@ const uploadImage = (req, res) => {
   upload.single("file")(req, res, (err) => {
     console.log(req.body);
     res.json({
-      message: "File uploaded successfully",
-      image: `/${req.file.path}`,
+      filePath: `/${req.file.path}`,
     });
   });
 };
