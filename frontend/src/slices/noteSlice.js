@@ -1,4 +1,5 @@
 import { NOTES_URL } from "../constants";
+import { UPLOADS_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -59,6 +60,16 @@ export const noteSlice = apiSlice.injectEndpoints({
         console.log("Data received from deleteNote mutation:", data);
       },
     }),
+    uploadFile: builder.mutation({
+      query: (data) => ({
+        url: `${UPLOADS_URL}/`,
+        method: "POST",
+        body: data,
+      }),
+      onQueryStarted: (data) => {
+        console.log("Data received from uploadFile mutation:", data);
+      },
+    }),
   }),
 });
 
@@ -96,6 +107,7 @@ export const {
   useSaveNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,
+  useUploadFileMutation,
 } = noteSlice;
 
 export const { addNote, removeNoteFromState } = noteSliceActions.actions;

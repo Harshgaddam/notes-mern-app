@@ -5,6 +5,7 @@ import { useUpdateNoteMutation } from "../slices/noteSlice";
 import { useParams } from "react-router-dom";
 import { addNote } from "../slices/noteSlice";
 import { useDispatch } from "react-redux";
+import { useUploadFileMutation } from "../slices/noteSlice";
 import { toast } from "react-toastify";
 
 const NotePage = () => {
@@ -31,13 +32,30 @@ const NotePage = () => {
     setFile(stateNote.file);
   }, [stateNote]);
 
+  const [uploadFile] = useUploadFileMutation();
+
+  const uploadHandler = async (e) => {
+    console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+
+    try {
+      const { path } = await uploadFile(formData).unwrap();
+      toast.success("File Uploaded");
+      console.log("path", path);
+      setFile(path);
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(title, description, content, file);
+  };
+
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     if (name === "title") setTitle(value);
     if (name === "description") setDescription(value);
     if (name === "content") setContent(value);
-    if (name === "file") setFile(value);
   };
 
   const [updateNote] = useUpdateNoteMutation();
@@ -110,11 +128,10 @@ const NotePage = () => {
         <Form.Group controlId="noteFile">
           <Form.Label>File</Form.Label>
           <Form.Control
+            label="Choose File"
+            onChange={uploadHandler}
             type="file"
-            placeholder="Enter file"
-            name="file"
-            onChange={handleChange}
-          />
+          ></Form.Control>
         </Form.Group>
 
         <br />
