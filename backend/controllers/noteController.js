@@ -30,22 +30,6 @@ const createNote = asyncHandler(async (req, res) => {
   res.json(newNote._id);
 });
 
-const saveNote = asyncHandler(async (req, res) => {
-  const { userId, title, description, content, file } = req.body;
-  const user = await User.findById(userId);
-  const newNote = await Note.create({
-    user: userId,
-    title,
-    description,
-    content: content,
-    file: file,
-  });
-  await newNote.save();
-  user.notes.push(newNote._id);
-  await user.save();
-  res.send(newNote._id);
-});
-
 const updateNote = asyncHandler(async (req, res) => {
   const { noteId, title, description, content, file } = req.body;
   const note = await Note.findById(noteId);
@@ -70,4 +54,4 @@ const deleteNote = asyncHandler(async (req, res) => {
   res.send({ message: "Note deleted" });
 });
 
-export { getNotes, getNoteById, createNote, saveNote, updateNote, deleteNote };
+export { getNotes, getNoteById, createNote, updateNote, deleteNote };
