@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { addNote } from "../slices/noteSlice";
 import { useDispatch } from "react-redux";
 import { useUploadFileMutation } from "../slices/noteSlice";
+import { useDeleteFileMutation } from "../slices/noteSlice";
 import { toast } from "react-toastify";
 
 const NotePage = () => {
@@ -48,6 +49,7 @@ const NotePage = () => {
       const { filePath } = await uploadFile(formData).unwrap();
       toast.success("File Uploaded");
       console.log("path", filePath);
+      setFile(filePath);
       dispatch(
         addNote({
           noteId,
@@ -57,13 +59,24 @@ const NotePage = () => {
           file: filePath,
         })
       );
-      setFile(filePath);
       console.log("file", file);
     } catch (error) {
       console.log(error);
     }
     console.log(title, description, content, file);
   };
+
+  const [deleteFile] = useDeleteFileMutation();
+  const deleteHandler = async () => {
+    const fileName = file;
+    await deleteFile(fileName).unwrap();
+    const newNote = { noteId, title, description, content, file: "" };
+    console.log("newNote", newNote);
+    const response = await updateNote(newNote).unwrap();
+    console.log("response", response);
+    dispatch(addNote(newNote));
+  };
+
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -139,14 +152,26 @@ const NotePage = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="noteFile">
-          <Form.Label>File</Form.Label>
-          <Form.Control
-            label="Choose File"
-            onChange={uploadHandler}
-            type="file"
-          ></Form.Control>
-        </Form.Group>
+        <br />
+        {file ? (
+          <Form.Group className="d-flex justify-content-between align-items-center">
+            <Form.Label>
+              <strong>{file}</strong>
+            </Form.Label>
+            <Button variant="danger" className="ml-2" onClick={deleteHandler}>
+              Delete File
+            </Button>
+          </Form.Group>
+        ) : (
+          <Form.Group controlId="noteFile">
+            <Form.Label>File</Form.Label>
+            <Form.Control
+              label="Choose File"
+              onChange={uploadHandler}
+              type="file"
+            ></Form.Control>
+          </Form.Group>
+        )}
 
         <br />
         <Button variant="primary" type="submit">

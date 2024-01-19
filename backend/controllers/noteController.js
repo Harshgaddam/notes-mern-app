@@ -1,6 +1,5 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Note from "../models/noteModel.js";
-import User from "../models/userModel.js";
 
 const getNotes = asyncHandler(async (req, res) => {
   const notes = await Note.find({});
@@ -32,6 +31,7 @@ const createNote = asyncHandler(async (req, res) => {
 
 const updateNote = asyncHandler(async (req, res) => {
   const { noteId, title, description, content, file } = req.body;
+  console.log("Update Note", req.body);
   const note = await Note.findById(noteId);
   if (!note) {
     return res.status(404).json({ message: "Note not found" });

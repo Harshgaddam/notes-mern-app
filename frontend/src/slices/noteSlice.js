@@ -70,6 +70,16 @@ export const noteSlice = apiSlice.injectEndpoints({
         console.log("Data received from uploadFile mutation:", data);
       },
     }),
+    deleteFile: builder.mutation({
+      query: (filePath) => ({
+        url: `${AWS_URL}/deleteFile`,
+        method: "DELETE",
+        params: { filePath: filePath },
+      }),
+      onQueryStarted: (data) => {
+        console.log("Data received from deleteFile mutation:", data);
+      },
+    }),
   }),
 });
 
@@ -111,6 +121,7 @@ export const {
   useUpdateNoteMutation,
   useDeleteNoteMutation,
   useUploadFileMutation,
+  useDeleteFileMutation,
 } = noteSlice;
 
 export const { addNote, removeNoteFromState } = noteSliceActions.actions;

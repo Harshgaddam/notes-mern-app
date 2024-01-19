@@ -44,12 +44,14 @@ async function putObjectURL(fileName, contentType) {
 }
 
 async function deleteObject(key) {
+  console.log("key", `Uploads/${key}`);
   const command = new DeleteObjectCommand({
     Bucket: "mern-notes-app-bucket",
-    Key: key,
+    Key: `uploads/${key}`,
   });
   await client.send(command);
-  console.log("Deleted");
+  console.log("aws Deleted");
+  return "Deleted";
 }
 
 router.get("/getFileURL", async (req, res) => {
@@ -76,9 +78,8 @@ router.put("/putFile", upload.single("file"), async (req, res) => {
 
 router.delete("/deleteFile", async (req, res) => {
   const filePath = req.query.filePath;
-  console.log(filePath);
-  const response = await deleteObject(filePath);
-  res.send(response);
+  await deleteObject(filePath);
+  res.json({ message: "Deleted" });
 });
 
 export default router;
