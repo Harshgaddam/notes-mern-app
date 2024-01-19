@@ -1,5 +1,5 @@
 import { NOTES_URL } from "../constants";
-import { UPLOADS_URL } from "../constants";
+import { AWS_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -62,8 +62,8 @@ export const noteSlice = apiSlice.injectEndpoints({
     }),
     uploadFile: builder.mutation({
       query: (data) => ({
-        url: `${UPLOADS_URL}/`,
-        method: "POST",
+        url: `${AWS_URL}/putFile`,
+        method: "PUT",
         body: data,
       }),
       onQueryStarted: (data) => {
@@ -82,8 +82,11 @@ export const noteSliceActions = createSlice({
       const existingNoteIndex = state.myNotes.findIndex(
         (note) => note.noteId === newNote.noteId
       );
+      console.log("existingNoteIndex:", existingNoteIndex);
       if (existingNoteIndex === -1) state.myNotes.push(newNote);
       else state.myNotes[existingNoteIndex] = newNote;
+
+      console.log("state:", state);
 
       localStorage.setItem("notes", JSON.stringify(state));
     },

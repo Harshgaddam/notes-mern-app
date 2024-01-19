@@ -9,6 +9,11 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import express from "express";
 const router = express.Router();
 
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 const client = new S3Client({
   region: "ap-south-2",
   credentials: {
@@ -28,7 +33,7 @@ async function getObject(key) {
   return url;
 }
 
-async function putObject(fileName, contentType) {
+async function putObjectURL(fileName, contentType) {
   const command = new PutObjectCommand({
     Bucket: "mern-notes-app-bucket",
     Key: `uploads/${fileName}`,
@@ -52,10 +57,21 @@ router.get("/getFileURL", async (req, res) => {
   await getObject(fileName);
 });
 
-router.put("/putFileURL", async (req, res) => {
-  const url = await putObject(`${Date.now()}.jpeg`, "image/jpeg");
-  console.log(url);
-  res.send(url);
+router.put("/putFile", upload.single("file"), async (req, res) => {
+  const userId = req.body.userId;
+  const userName = req.body.userName;
+
+  const fileBuffer = req.file.buffer;
+  const fileName = `${userName}/${req.file.originalname}`;
+  const contentType = req.file.mimetype;
+  const url = await putObjectURL(fileName, contentType);
+
+  await fetch(url, {
+    method: "PUT",
+    body: fileBuffer,
+  });
+  console.log("Uploaded", fileName);
+  res.json({ filePath: fileName.toString() });
 });
 
 router.delete("/deleteFile", async (req, res) => {

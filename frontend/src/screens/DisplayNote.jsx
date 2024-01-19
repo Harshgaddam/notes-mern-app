@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo._id || "";
+  const userName = userInfo.name || "";
   const { _id: noteId } = useParams();
   console.log("noteId", noteId, userId);
 
@@ -37,13 +38,27 @@ const NotePage = () => {
   const uploadHandler = async (e) => {
     console.log(e.target.files[0]);
     const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("userName", userName);
     formData.append("file", e.target.files[0]);
-
+    for (let pair of formData.entries()) {
+      console.log(pair);
+    }
     try {
       const { filePath } = await uploadFile(formData).unwrap();
       toast.success("File Uploaded");
       console.log("path", filePath);
+      dispatch(
+        addNote({
+          noteId,
+          title,
+          description,
+          content,
+          file: filePath,
+        })
+      );
       setFile(filePath);
+      console.log("file", file);
     } catch (error) {
       console.log(error);
     }

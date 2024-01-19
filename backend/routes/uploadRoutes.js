@@ -11,9 +11,9 @@ const __dirname = dirname(__filename);
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, path.join(__dirname, "../../frontend/public/uploads"));
-  },
+  // destination(req, file, cb) {
+  //   cb(null, path.join(__dirname, "uploads"));
+  // },
   filename(req, file, cb) {
     cb(
       null,
