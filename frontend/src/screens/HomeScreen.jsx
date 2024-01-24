@@ -1,11 +1,13 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Note from "../components/NoteCard";
-import Footer from "../components/Footer";
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { addNote } from "../slices/noteSlice";
 import { useNavigate } from "react-router-dom";
+import { useCreateNoteMutation } from "../slices/noteSlice";
+import { BsPlusLg } from "react-icons/bs";
+import "../../public/index.css";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
@@ -19,6 +21,28 @@ const HomeScreen = () => {
   useEffect(() => {
     if (!userInfo) navigate("/login");
   });
+
+  const [createNote] = useCreateNoteMutation();
+
+  const openNewNote = async (e) => {
+    e.preventDefault();
+    try {
+      const { data: newNoteId } = await createNote({ userId: userId });
+      console.log("newNOteId", newNoteId);
+      dispatch(
+        addNote({
+          noteId: newNoteId,
+          title: "Untitled",
+          description: "",
+          content: "",
+          file: "",
+        })
+      );
+      navigate(`/${newNoteId}`);
+    } catch (error) {
+      console.error("Error creating a new note:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,17 +71,21 @@ const HomeScreen = () => {
   }, [userInfo, data, dispatch]);
 
   return (
-    <>
-      <Row>
-        {data.map((note) => (
-          <Col key={note._id} xs={12}>
-            <Note note={note} />
-          </Col>
-        ))}
-      </Row>
+    <section>
+      <div>
+        <Row>
+          {data.map((note) => (
+            <Col key={note._id} xs={12}>
+              <Note note={note} />
+            </Col>
+          ))}
+        </Row>
 
-      <Footer />
-    </>
+        <Button onClick={openNewNote} className="btn addNoteBtn btn-lg ">
+          <BsPlusLg />
+        </Button>
+      </div>
+    </section>
   );
 };
 

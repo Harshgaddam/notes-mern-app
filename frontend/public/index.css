@@ -1,0 +1,6 @@
+.btn.addNoteBtn {
+  position: fixed;
+  bottom: 4rem;
+  right: 4rem;
+  background-color: #2b2f32;
+}
