@@ -1,26 +1,33 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Note from "../components/NoteCard";
+
 import { useGetUserNotesQuery } from "../slices/userApiSlice";
 import { addNote } from "../slices/noteSlice";
-import { useNavigate } from "react-router-dom";
 import { useCreateNoteMutation } from "../slices/noteSlice";
+
 import { BsPlusLg } from "react-icons/bs";
+
 import "../../public/index.css";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo?._id || "";
 
-  const { data = [] } = useGetUserNotesQuery({ userId }) || "";
+  const { data = [], refetch } = useGetUserNotesQuery({ userId }) || "";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const notes = useSelector((state) => state.notes.myNotes);
+
   useEffect(() => {
     if (!userInfo) navigate("/login");
-  });
+    notes && refetch();
+  }, [userInfo, notes, refetch, navigate]);
 
   const [createNote] = useCreateNoteMutation();
 
@@ -28,7 +35,7 @@ const HomeScreen = () => {
     e.preventDefault();
     try {
       const { data: newNoteId } = await createNote({ userId: userId });
-      console.log("newNOteId", newNoteId);
+      console.log("newNoteId", newNoteId);
       dispatch(
         addNote({
           noteId: newNoteId,
@@ -47,6 +54,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (userInfo || data) {
+        refetch();
         try {
           if (data) {
             data.map((note) =>
@@ -68,7 +76,7 @@ const HomeScreen = () => {
     };
 
     userInfo && fetchData();
-  }, [userInfo, data, dispatch]);
+  }, [userInfo, data, refetch, dispatch]);
 
   return (
     <section>

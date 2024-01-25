@@ -1,13 +1,17 @@
 import { Container, Form, Button } from "react-bootstrap";
+
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useUpdateNoteMutation } from "../slices/noteSlice";
 import { useParams } from "react-router-dom";
-import { addNote } from "../slices/noteSlice";
 import { useDispatch } from "react-redux";
+
+import { useUpdateNoteMutation } from "../slices/noteSlice";
+import { addNote } from "../slices/noteSlice";
 import { useUploadFileMutation } from "../slices/noteSlice";
 import { useDeleteFileMutation } from "../slices/noteSlice";
+
 import { toast } from "react-toastify";
+
 import "../../public/index.css";
 
 const NotePage = () => {
