@@ -18,15 +18,12 @@ const updateUser = asyncHandler(async (req, res) => {
   user.email = req.body.email || user.email;
   user.password = req.body.password || user.password;
   user.notes = req.body.notes || user.notes;
-
-  console.log(user);
   if (!user) {
     return res.send("User not found");
   }
 
   const updatedUser = await user.save();
 
-  console.log(updatedUser);
   res.json({
     _id: updatedUser._id,
     name: updatedUser.name,
@@ -37,7 +34,6 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-  console.log(user);
   if (!user) {
     return res.send("User not found");
   }
@@ -63,7 +59,6 @@ const getUserNotes = asyncHandler(async (req, res) => {
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
@@ -121,8 +116,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const removeNote = asyncHandler(async (req, res) => {
   const { userId, noteId } = req.body;
-  console.log(req.body);
-  console.log(userId, noteId);
   const user = await User.findById(userId);
   if (!user) {
     return res.status(404).json({ message: "User not found" });

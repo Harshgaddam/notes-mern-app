@@ -6,6 +6,9 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 const router = express.Router();
 
@@ -13,14 +16,11 @@ import multer from "multer";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
 const client = new S3Client({
   region: "ap-south-2",
   credentials: {
-    // accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    accessKeyId: "AKIA6C5RA5SLI7RKPGFP",
-    secretAccessKey: "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",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
