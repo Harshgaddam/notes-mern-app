@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useUploadFileMutation } from "../slices/noteSlice";
 import { useDeleteFileMutation } from "../slices/noteSlice";
 import { toast } from "react-toastify";
+import "../../public/index.css";
 
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
@@ -116,32 +117,25 @@ const NotePage = () => {
 
   return (
     <Container className="mt-3">
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} className="create-note__form">
         <Form.Group controlId="noteTitle">
-          <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter title"
+            placeholder="Title"
             name="title"
             value={title}
             onChange={handleChange}
             required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="noteDescription">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter description"
-            name="description"
-            value={description}
-            onChange={handleChange}
+            style={{
+              fontSize: "2rem",
+              border: "none",
+              outline: "none",
+              boxShadow: "none",
+            }}
           />
         </Form.Group>
 
         <Form.Group controlId="noteText">
-          <Form.Label>Note</Form.Label>
           <Form.Control
             as="textarea"
             rows={5}
@@ -149,10 +143,18 @@ const NotePage = () => {
             name="content"
             value={content}
             onChange={handleChange}
+            style={{
+              border: "none",
+              outline: "none",
+              boxShadow: "none",
+              height: "calc(100vh - 300px)",
+              flex: "1",
+            }}
           />
         </Form.Group>
 
         <br />
+
         {file ? (
           <Form.Group className="d-flex justify-content-between align-items-center">
             <Form.Label>
@@ -164,7 +166,6 @@ const NotePage = () => {
           </Form.Group>
         ) : (
           <Form.Group controlId="noteFile">
-            <Form.Label>File</Form.Label>
             <Form.Control
               label="Choose File"
               onChange={uploadHandler}
@@ -174,9 +175,11 @@ const NotePage = () => {
         )}
 
         <br />
-        <Button variant="primary" type="submit">
-          Save Note
-        </Button>
+        <div className="d-flex justify-content-center">
+          <Button variant="primary" type="submit">
+            Save Note
+          </Button>
+        </div>
       </Form>
     </Container>
   );

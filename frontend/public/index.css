@@ -4,3 +4,17 @@
   right: 4rem;
   background-color: #2b2f32;
 }
+
+.create-note__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-note__form p {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border-radius: 0.2rem;
+  font-size: 1.1rem;
+  color: var(--color-green);
+}
