@@ -27,9 +27,6 @@ export const noteSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from createNote mutation:", data);
-      },
     }),
     saveNote: builder.mutation({
       query: (data) => ({
@@ -37,9 +34,6 @@ export const noteSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from saveNote mutation:", data);
-      },
     }),
     updateNote: builder.mutation({
       query: (data) => ({
@@ -47,18 +41,12 @@ export const noteSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from updateNote mutation:", data);
-      },
     }),
     deleteNote: builder.mutation({
       query: (noteId) => ({
         url: `${NOTES_URL}/${noteId}`,
         method: "DELETE",
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from deleteNote mutation:", data);
-      },
     }),
     uploadFile: builder.mutation({
       query: (data) => ({
@@ -66,9 +54,6 @@ export const noteSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from uploadFile mutation:", data);
-      },
     }),
     deleteFile: builder.mutation({
       query: (filePath) => ({
@@ -76,9 +61,6 @@ export const noteSlice = apiSlice.injectEndpoints({
         method: "DELETE",
         params: { filePath: filePath },
       }),
-      onQueryStarted: (data) => {
-        console.log("Data received from deleteFile mutation:", data);
-      },
     }),
   }),
 });
@@ -92,12 +74,8 @@ export const noteSliceActions = createSlice({
       const existingNoteIndex = state.myNotes.findIndex(
         (note) => note.noteId === newNote.noteId
       );
-      console.log("existingNoteIndex:", existingNoteIndex);
       if (existingNoteIndex === -1) state.myNotes.push(newNote);
       else state.myNotes[existingNoteIndex] = newNote;
-
-      console.log("state:", state);
-
       localStorage.setItem("notes", JSON.stringify(state));
     },
     removeNoteFromState: (state, action) => {

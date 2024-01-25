@@ -44,13 +44,11 @@ async function putObjectURL(fileName, contentType) {
 }
 
 async function deleteObject(key) {
-  console.log("key", `Uploads/${key}`);
   const command = new DeleteObjectCommand({
     Bucket: "mern-notes-app-bucket",
     Key: `uploads/${key}`,
   });
   await client.send(command);
-  console.log("aws Deleted");
   return "Deleted";
 }
 
@@ -60,7 +58,6 @@ router.get("/getFileURL", async (req, res) => {
 });
 
 router.put("/putFile", upload.single("file"), async (req, res) => {
-  const userId = req.body.userId;
   const userName = req.body.userName;
 
   const fileBuffer = req.file.buffer;
@@ -72,7 +69,6 @@ router.put("/putFile", upload.single("file"), async (req, res) => {
     method: "PUT",
     body: fileBuffer,
   });
-  console.log("Uploaded", fileName);
   res.json({ filePath: fileName.toString() });
 });
 

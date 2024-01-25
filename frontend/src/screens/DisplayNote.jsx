@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Container, Form, Button } from "react-bootstrap";
 
 import { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ const NotePage = () => {
   const userId = userInfo._id || "";
   const userName = userInfo.name || "";
   const { _id: noteId } = useParams();
-  console.log("noteId", noteId, userId);
 
   const dispatch = useDispatch();
 
@@ -42,18 +42,15 @@ const NotePage = () => {
   const [uploadFile] = useUploadFileMutation();
 
   const uploadHandler = async (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     const formData = new FormData();
     formData.append("userId", userId);
     formData.append("userName", userName);
     formData.append("file", e.target.files[0]);
-    for (let pair of formData.entries()) {
-      console.log(pair);
-    }
+    // for (let pair of formData.entries()) console.log(pair);
     try {
       const { filePath } = await uploadFile(formData).unwrap();
       toast.success("File Uploaded");
-      console.log("path", filePath);
       setFile(filePath);
       dispatch(
         addNote({
@@ -64,11 +61,9 @@ const NotePage = () => {
           file: filePath,
         })
       );
-      console.log("file", file);
     } catch (error) {
       console.log(error);
     }
-    console.log(title, description, content, file);
   };
 
   const [deleteFile] = useDeleteFileMutation();
@@ -76,9 +71,7 @@ const NotePage = () => {
     const fileName = file;
     await deleteFile(fileName).unwrap();
     const newNote = { noteId, title, description, content, file: "" };
-    console.log("newNote", newNote);
     const response = await updateNote(newNote).unwrap();
-    console.log("response", response);
     dispatch(addNote(newNote));
   };
 

@@ -16,7 +16,6 @@ const getNoteById = asyncHandler(async (req, res) => {
 
 const createNote = asyncHandler(async (req, res) => {
   const { userId } = req.body;
-  console.log(req.body);
   const newNote = await Note.create({
     user: userId,
     title: "Untitled",
@@ -24,14 +23,12 @@ const createNote = asyncHandler(async (req, res) => {
     content: "",
     file: "",
   });
-  console.log(newNote);
   await newNote.save();
   res.json(newNote._id);
 });
 
 const updateNote = asyncHandler(async (req, res) => {
   const { noteId, title, description, content, file } = req.body;
-  console.log("Update Note", req.body);
   const note = await Note.findById(noteId);
   if (!note) {
     return res.status(404).json({ message: "Note not found" });

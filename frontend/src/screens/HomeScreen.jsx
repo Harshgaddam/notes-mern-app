@@ -35,7 +35,6 @@ const HomeScreen = () => {
     e.preventDefault();
     try {
       const { data: newNoteId } = await createNote({ userId: userId });
-      console.log("newNoteId", newNoteId);
       dispatch(
         addNote({
           noteId: newNoteId,

@@ -4,7 +4,6 @@ dotenv.config();
 import connectDB from "./config/db.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import uploadRoutes from "./routes/uploadRoutes.js";
 import awsRoutes from "./routes/awsRoutes.js";
 import path from "path";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
@@ -17,7 +16,6 @@ app.use(express.json());
 
 app.use("/api/note", noteRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/upload", uploadRoutes);
 app.use("/api/aws", awsRoutes);
 
 const __dirname = path.resolve();
