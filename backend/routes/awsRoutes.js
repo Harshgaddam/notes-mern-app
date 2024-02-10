@@ -24,10 +24,10 @@ const client = new S3Client({
   },
 });
 
-async function getObject(key) {
+async function getObject(fileName) {
   const command = new GetObjectCommand({
     Bucket: "mern-notes-app-bucket",
-    Key: key,
+    Key: `uploads/${fileName}`,
   });
   const url = await getSignedUrl(client, command);
   return url;
@@ -54,7 +54,8 @@ async function deleteObject(key) {
 
 router.get("/getFileURL", async (req, res) => {
   const fileName = req.query.fileName;
-  await getObject(fileName);
+  const url = await getObject(fileName);
+  res.send(url);
 });
 
 router.put("/putFile", upload.single("file"), async (req, res) => {

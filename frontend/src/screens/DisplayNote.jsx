@@ -15,6 +15,9 @@ import { toast } from "react-toastify";
 
 import "../../public/index.css";
 
+import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import pdfFile from "./dbms.pdf";
+
 const NotePage = () => {
   const { userInfo } = useSelector((state) => state.auth) || "";
   const userId = userInfo._id || "";
@@ -112,6 +115,10 @@ const NotePage = () => {
     toast.success("Note Saved");
   };
 
+  const docs = [{ uri: pdfFile }];
+
+  console.log(docs, docs.length);
+
   return (
     <Container className="mt-3">
       <Form onSubmit={submitHandler} className="create-note__form">
@@ -172,6 +179,13 @@ const NotePage = () => {
         )}
 
         <br />
+
+        <DocViewer
+          documents={[file]}
+          pluginRenderers={DocViewerRenderers}
+          style={{ width: 500, height: 500 }}
+        />
+
         <div className="d-flex justify-content-center">
           <Button variant="primary" type="submit">
             Save Note
