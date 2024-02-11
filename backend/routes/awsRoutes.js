@@ -53,14 +53,14 @@ async function deleteObject(key) {
 }
 
 router.get("/getFileURL", async (req, res) => {
+  const userName = req.query.userName;
   const fileName = req.query.fileName;
-  const url = await getObject(fileName);
-  res.send(url);
+  const url = await getObject(`${userName}/${fileName}`);
+  res.json({ presignedURL: url });
 });
 
 router.put("/putFile", upload.single("file"), async (req, res) => {
   const userName = req.body.userName;
-
   const fileBuffer = req.file.buffer;
   const fileName = `${userName}/${req.file.originalname}`;
   const contentType = req.file.mimetype;

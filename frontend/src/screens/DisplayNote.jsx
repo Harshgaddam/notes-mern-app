@@ -10,6 +10,7 @@ import { useUpdateNoteMutation } from "../slices/noteSlice";
 import { addNote } from "../slices/noteSlice";
 import { useUploadFileMutation } from "../slices/noteSlice";
 import { useDeleteFileMutation } from "../slices/noteSlice";
+import { useGetFileURLMutation } from "../slices/noteSlice";
 
 import { toast } from "react-toastify";
 
@@ -120,6 +121,21 @@ const NotePage = () => {
     }
   };
 
+  const [getFileURL] = useGetFileURLMutation();
+
+  const openPresignedURLInNewTab = async () => {
+    try {
+      const fileName = file.split("/")[1];
+      const { presignedURL } = await getFileURL({
+        userName: userName,
+        fileName: fileName,
+      }).unwrap();
+      window.open(presignedURL, "_blank");
+    } catch (error) {
+      console.error("Error fetching presigned URL:", error);
+    }
+  };
+
   return (
     <Container className="mt-3">
       <Form onSubmit={submitHandler} className="create-note__form">
@@ -164,9 +180,11 @@ const NotePage = () => {
           <Form.Group className="d-flex justify-content-between align-items-center">
             {file ? (
               <a
-                href={file}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openPresignedURLInNewTab();
+                }}
                 className="file-link"
                 style={{ color: "black" }}
                 title={file}

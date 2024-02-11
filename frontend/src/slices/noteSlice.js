@@ -62,6 +62,13 @@ export const noteSlice = apiSlice.injectEndpoints({
         params: { filePath: filePath },
       }),
     }),
+    getFileURL: builder.mutation({
+      query: ({ userName, fileName }) => ({
+        url: `${AWS_URL}/getFileURL`,
+        method: "GET",
+        params: { userName: userName, fileName: fileName },
+      }),
+    }),
   }),
 });
 
@@ -100,6 +107,7 @@ export const {
   useDeleteNoteMutation,
   useUploadFileMutation,
   useDeleteFileMutation,
+  useGetFileURLMutation,
 } = noteSlice;
 
 export const { addNote, removeNoteFromState } = noteSliceActions.actions;
