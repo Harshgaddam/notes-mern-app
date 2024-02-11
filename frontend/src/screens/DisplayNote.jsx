@@ -112,6 +112,14 @@ const NotePage = () => {
     toast.success("Note Saved");
   };
 
+  const truncateFileName = (fileName, maxLength = 30) => {
+    if (fileName.length <= maxLength) {
+      return fileName;
+    } else {
+      return fileName.substring(0, maxLength) + "...";
+    }
+  };
+
   return (
     <Container className="mt-3">
       <Form onSubmit={submitHandler} className="create-note__form">
@@ -154,12 +162,25 @@ const NotePage = () => {
 
         {file ? (
           <Form.Group className="d-flex justify-content-between align-items-center">
-            <Form.Label>
-              <strong>{file}</strong>
-            </Form.Label>
-            <Button variant="danger" className="ml-2" onClick={deleteHandler}>
-              Delete File
-            </Button>
+            {file ? (
+              <a
+                href={file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="file-link"
+                style={{ color: "black" }}
+                title={file}
+              >
+                <strong>{truncateFileName(file)}</strong>
+              </a>
+            ) : (
+              <span>No file attached</span>
+            )}
+            {file && (
+              <Button variant="danger" className="ml-2" onClick={deleteHandler}>
+                Delete File
+              </Button>
+            )}
           </Form.Group>
         ) : (
           <Form.Group controlId="noteFile">

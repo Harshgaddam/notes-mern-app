@@ -7,12 +7,15 @@ import userRoutes from "./routes/userRoutes.js";
 import awsRoutes from "./routes/awsRoutes.js";
 import path from "path";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import compression from "compression";
 
 connectDB();
 
 const app = express();
 
 app.use(express.json());
+
+app.use(compression());
 
 app.use("/api/note", noteRoutes);
 app.use("/api/user", userRoutes);
